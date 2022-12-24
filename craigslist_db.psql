@@ -1,0 +1,71 @@
+DROP DATABASE craigslist_db;
+CREATE DATABASE craigslist_db;
+\c craigslist_db;
+
+CREATE TABLE regions(
+    id SERIAL PRIMARY KEY,
+    region TEXT NOT NULL
+);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE user_preferred_regions (
+    id SERIAL PRIMARY KEY,
+    username_id INT REFERENCES users ON DELETE CASCADE,
+    region_id INT REFERENCES regions ON DELETE CASCADE
+);
+
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    category TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    post_text TEXT NOT NULL,
+    location TEXT NOT NULL,
+    username_id INT REFERENCES users ON DELETE CASCADE,
+    region_id INT REFERENCES regions ON DELETE CASCADE,
+    category_id INT REFERENCES categories ON DELETE CASCADE
+);
+
+INSERT INTO regions 
+(region)
+VALUES
+('San Francisco'),
+('Atlanta'),
+('Boston');
+
+INSERT INTO users
+(username)
+VALUES
+('lilypadTribe'),
+('exceptcord'),
+('liftbroker');
+
+INSERT INTO user_preferred_regions
+(username_id, region_id)
+VALUES
+(1,1),
+(2,2),
+(3,3);
+
+INSERT INTO categories
+(category)
+VALUES
+('anitques'),
+('computer'),
+('education');
+
+INSERT INTO posts
+(title, post_text, location, username_id, region_id, category_id)
+VALUES
+('Looking for...','looking to trade','Boston',1,1,1),
+('For sale...','Selling my car','New York',2,2,2),
+('A class for...','cooking class!','L.A',3,3,3);
+
+
