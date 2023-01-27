@@ -5,20 +5,22 @@ CREATE DATABASE soccer_db;
 CREATE TABLE league_teams (
     id SERIAL PRIMARY KEY,
     team_name TEXT NOT NULL,
-    ranking INT NOT NULL
+    city TEXT NOT NULL
 );
 
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT,
-    team_id INT REFERENCES league_teams ON DELETE CASCADE
+    height INT NOT NULL,
+    age INT NOT NULL,
+    current_team_id INT REFERENCES league_teams ON DELETE CASCADE
 );
 
 CREATE TABLE goals_scored (
     id SERIAL PRIMARY KEY,
-    player_id INT REFERENCES players ON DELETE CASCADE,
-    goals_scored INT NOT NULL DEFAULT 0
+    match_id INT REFERENCES matches ON DELETE CASCADE,
+    goals_scored INT REFERENCES matches NOT NULL DEFAULT 0
 );
 
 CREATE TABLE referees (
@@ -29,15 +31,24 @@ CREATE TABLE referees (
 
 CREATE TABLE matches (
     id SERIAL PRIMARY KEY,
-    team_one_id INT REFERENCES league_teams ON DELETE CASCADE,
-    team_two_id INT REFERENCES league_teams ON DELETE CASCADE,
-    referee_id INT REFERENCES referees ON DELETE CASCADE
+    home_team_id INT REFERENCES league_teams ON DELETE CASCADE,
+    away_team_id INT REFERENCES league_teams ON DELETE CASCADE,
+    location TEXT NOT NULL,
+    game_date INT NOT NULL,
+    start_time INT NOT NULL,
+    season_id INT REFERENCES season_dates ON DELETE CASCADE,
+    ref_one_id INT REFERENCES referees ON DELETE CASCADE,
+    ref_two_id INT REFERENCES referees ON DELETE CASCADE,
+    ref_three_id INT REFERENCES referees ON DELETE CASCADE,
+    goals INT NOT NULL
 );
 
 CREATE TABLE season_dates (
     id SERIAL PRIMARY KEY,
     start_date TEXT NOT NULL,
-    end_date TEXT NOT NULL
+    end_date TEXT NOT NULL,
+    line_ups TEXT REFERENCES matches NOT NULL,
+    matches INT REFERENCES matches
 );
 
 INSERT INTO league_teams

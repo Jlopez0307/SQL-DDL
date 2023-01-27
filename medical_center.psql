@@ -14,14 +14,17 @@ CREATE TABLE doctors (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    medical_center_id INT REFERENCES medical_centers ON DELETE CASCADE
+    medical_center_id INT REFERENCES medical_centers ON DELETE CASCADE,
+    doctor_roles TEXT NOT NULL
 );
 
 --Patients table with first and last name
 CREATE TABLE patients (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL
+    last_name TEXT NOT NULL,
+    birthday INT NOT NULL,
+    patient_insurance TEXT NOT NULL
 );
 
 --Table to keep track of the ids of patients and the doctors that visited them. Tracks how many times they were visited
@@ -35,13 +38,14 @@ CREATE TABLE patient_visits (
 --Table for diseases
 CREATE TABLE diseases (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    description TEXT NOT NULL
 );
 
 --Table to keep track of which patients have diseases and which ones
 CREATE TABLE diagnosed_patients (
     id SERIAL PRIMARY KEY,
-    patient_id INT REFERENCES patients ON DELETE CASCADE,
+    patient_id INT REFERENCES patient_visits ON DELETE CASCADE,
     disease_id INT REFERENCES diseases ON DELETE CASCADE
 );
 

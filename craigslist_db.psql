@@ -4,29 +4,25 @@ CREATE DATABASE craigslist_db;
 
 CREATE TABLE regions(
     id SERIAL PRIMARY KEY,
-    region TEXT NOT NULL
+    name TEXT NOT NULL
 );
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL UNIQUE
-);
-
-CREATE TABLE user_preferred_regions (
-    id SERIAL PRIMARY KEY,
-    username_id INT REFERENCES users ON DELETE CASCADE,
-    region_id INT REFERENCES regions ON DELETE CASCADE
+    name TEXT NOT NULL UNIQUE
+    user_password TEXT NOT NULL,
+    user_region TEXT REFERENCES regions ON DELETE CASCADE
 );
 
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
-    category TEXT NOT NULL UNIQUE
+    name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
-    post_text TEXT NOT NULL,
+    text TEXT NOT NULL,
     location TEXT NOT NULL,
     username_id INT REFERENCES users ON DELETE CASCADE,
     region_id INT REFERENCES regions ON DELETE CASCADE,
